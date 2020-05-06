@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
 import 'package:flutter_cars/widgets/button.dart';
 
@@ -80,5 +82,6 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    push(context,HomePage());
   }
 }
