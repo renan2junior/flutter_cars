@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/widgets/app_text.dart';
+import 'package:flutter_cars/widgets/button.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key}) : super(key: key);
@@ -8,6 +10,16 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController tLogin = TextEditingController();
+  final TextEditingController tSenha = TextEditingController();
+  final FocusNode _focusSenha = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
@@ -22,40 +34,51 @@ class _LoginPageState extends State<LoginPage> {
   _body() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: ListView(
-        children: <Widget>[
-          TextFormField(
-            decoration: InputDecoration(
-              labelText: "Login",
-              hintText: "Digite o login",
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: <Widget>[
+            AppText("Login", "Entre com o seu login.",
+                validator: _validatorLogin,
+                tController: tLogin,
+                textInputType: TextInputType.emailAddress,
+                nextFocus: _focusSenha),
+            SizedBox(
+              height: 10,
             ),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextFormField(
-            obscureText: true,
-            decoration: InputDecoration(
-              labelText: "Senha",
-              hintText: "Digite a senha",
+            AppText("Senha", "Entre com a sua senha",
+                validator: _validatorSenha,
+                password: true,
+                tController: tSenha,
+                textInputType: TextInputType.number,
+                focusNode: _focusSenha),
+            SizedBox(
+              height: 20,
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          RaisedButton(
-            color: Colors.blue,
-            onPressed: () {},
-            child: Text(
-              "Login",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-              ),
-            ),
-          )
-        ],
+            Button("Login", _onClickLogin)
+          ],
+        ),
       ),
     );
+  }
+
+  String _validatorLogin(String text) {
+    if (text.isEmpty) {
+      return "Digite o login";
+    }
+    return null;
+  }
+
+  String _validatorSenha(String text) {
+    if (text.isEmpty) {
+      return "Digite a senha";
+    }
+    return null;
+  }
+
+  _onClickLogin() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
   }
 }
