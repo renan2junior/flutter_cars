@@ -96,7 +96,7 @@ class _LoginPageState extends State<LoginPage> {
     ApiResponse<Usuario> response =
         await LoginApi.login(tLogin.text, tSenha.text);
     if (response.ok) {
-      push(context, HomePage());
+      push(context, HomePage(), replace: true);
     } else {
       alert(context, response.msg);
     }
