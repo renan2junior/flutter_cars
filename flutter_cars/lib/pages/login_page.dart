@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/services/api_response.dart';
 import 'package:flutter_cars/services/login_api.dart';
+import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
 import 'package:flutter_cars/widgets/button.dart';
@@ -84,15 +86,12 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    Usuario user  = await LoginApi.login(tLogin.text, tSenha.text);
-    
-    if (user!=null) {
-      print(user);
+    ApiResponse<Usuario> response  = await LoginApi.login(tLogin.text, tSenha.text);
+    if (response.ok) {
       push(context, HomePage());
     }else{
-      print("Deu ruim!!");
+      alert(context, response.msg);
     }
-    
     return;
   }
 }

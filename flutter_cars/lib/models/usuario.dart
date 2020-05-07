@@ -1,31 +1,35 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 class Usuario {
   String login;
   String nome;
   String email;
   String token;
-  
+  List<String> roles;
 
   Usuario(
     this.login,
     this.nome,
     this.email,
     this.token,
+    this.roles,
   );
-
 
   Usuario copyWith({
     String login,
     String nome,
     String email,
     String token,
+    List<String> roles,
   }) {
     return Usuario(
       login ?? this.login,
       nome ?? this.nome,
       email ?? this.email,
       token ?? this.token,
+      roles ?? this.roles,
     );
   }
 
@@ -35,6 +39,7 @@ class Usuario {
       'nome': nome,
       'email': email,
       'token': token,
+      'roles': roles,
     };
   }
 
@@ -46,6 +51,7 @@ class Usuario {
       map['nome'],
       map['email'],
       map['token'],
+      List<String>.from(map['roles']),
     );
   }
 
@@ -55,7 +61,7 @@ class Usuario {
 
   @override
   String toString() {
-    return 'Usuario(login: $login, nome: $nome, email: $email, token: $token)';
+    return 'Usuario(login: $login, nome: $nome, email: $email, token: $token, roles: $roles)';
   }
 
   @override
@@ -66,7 +72,8 @@ class Usuario {
       o.login == login &&
       o.nome == nome &&
       o.email == email &&
-      o.token == token;
+      o.token == token &&
+      listEquals(o.roles, roles);
   }
 
   @override
@@ -74,6 +81,7 @@ class Usuario {
     return login.hashCode ^
       nome.hashCode ^
       email.hashCode ^
-      token.hashCode;
+      token.hashCode ^
+      roles.hashCode;
   }
 }
