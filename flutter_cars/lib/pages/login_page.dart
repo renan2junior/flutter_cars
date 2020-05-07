@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/services/login_api.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
 import 'package:flutter_cars/widgets/button.dart';
@@ -13,8 +15,8 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController tLogin = TextEditingController();
-  final TextEditingController tSenha = TextEditingController();
+  final TextEditingController tLogin = TextEditingController(text: "admin");
+  final TextEditingController tSenha = TextEditingController(text: "123");
   final FocusNode _focusSenha = FocusNode();
 
   @override
@@ -78,10 +80,19 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  _onClickLogin() {
+  _onClickLogin() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    push(context,HomePage());
+    Usuario user  = await LoginApi.login(tLogin.text, tSenha.text);
+    
+    if (user!=null) {
+      print(user);
+      push(context, HomePage());
+    }else{
+      print("Deu ruim!!");
+    }
+    
+    return;
   }
 }

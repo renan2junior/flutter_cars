@@ -13,9 +13,9 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  _body(){
+  _body() {
     return Center(
       child: Text("Renan Junior"),
-      );
+    );
   }
 }
