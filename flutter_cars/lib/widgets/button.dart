@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  
   Function onPressed;
   String text;
+  bool showProgress;
 
-  Button(this.text, this.onPressed);
+  Button(this.text, this.onPressed, this.showProgress);
 
   // const Button({Key key}) : super(key: key);
 
@@ -14,13 +14,19 @@ class Button extends StatelessWidget {
     return RaisedButton(
       color: Colors.blue,
       onPressed: onPressed,
-      child: Text(
-        text,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 22,
-        ),
-      ),
+      child: showProgress
+          ? Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            )
+          : Text(
+              text,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 22,
+              ),
+            ),
     );
   }
 }

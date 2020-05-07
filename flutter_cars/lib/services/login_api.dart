@@ -8,7 +8,7 @@ class LoginApi {
   static Future<ApiResponse<Usuario>> login(String login, String senha) async {
     // var url = 'http://livrowebservices.com.br/rest/login';
     try {
-      var url = 'https://carssros-springboot.herokuapp.com/api/v2/login';
+      var url = 'https://carros-springboot.herokuapp.com/api/v2/login';
       Map params = {'username': login, 'password': senha};
       String _body = json.encode(params);
       Map<String, String> _headers = {"Content-Type": "application/json"};

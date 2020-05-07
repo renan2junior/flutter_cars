@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController tLogin = TextEditingController(text: "admin");
   final TextEditingController tSenha = TextEditingController(text: "123");
   final FocusNode _focusSenha = FocusNode();
+  bool _showProgress = false;
 
   @override
   void initState() {
@@ -61,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            Button("Login", _onClickLogin)
+            Button("Login", _onClickLogin, _showProgress),
           ],
         ),
       ),
@@ -83,15 +84,25 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onClickLogin() async {
+    setState(() {
+      _showProgress = true;
+    });
     if (!_formKey.currentState.validate()) {
+      setState(() {
+        _showProgress = false;
+      });
       return;
     }
-    ApiResponse<Usuario> response  = await LoginApi.login(tLogin.text, tSenha.text);
+    ApiResponse<Usuario> response =
+        await LoginApi.login(tLogin.text, tSenha.text);
     if (response.ok) {
       push(context, HomePage());
-    }else{
+    } else {
       alert(context, response.msg);
     }
+    setState(() {
+      _showProgress = false;
+    });
     return;
   }
 }
