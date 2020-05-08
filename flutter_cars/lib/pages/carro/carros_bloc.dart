@@ -1,25 +1,14 @@
-import 'dart:async';
-
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/services/carro_api.dart';
+import 'package:flutter_cars/utils/simple_bloc.dart';
 
-class CarrosBloc {
-
-  final _streamController = StreamController<List<Carro>>();
-
-  get stream => _streamController.stream;
-
+class CarrosBloc extends SimpleBloc<List<Carro>> {
   loadCarros(tipo) async {
     try {
-    List<Carro> carros = await CarroApi.getCarros(tipo);
-    _streamController.add(carros);  
+      List<Carro> carros = await CarroApi.getCarros(tipo);
+      add(carros);
     } catch (error) {
-      _streamController.addError(error);
+      addError(error);
     }
-    
-  }
-
-  void dispose() {
-    _streamController.close();
   }
 }
