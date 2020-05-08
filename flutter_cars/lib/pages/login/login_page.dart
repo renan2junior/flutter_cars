@@ -1,10 +1,9 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/carro/home_page.dart';
+import 'package:flutter_cars/pages/login/login_bloc.dart';
 import 'package:flutter_cars/services/api_response.dart';
-import 'package:flutter_cars/services/login_api.dart';
 import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
@@ -22,18 +21,20 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _tLogin = TextEditingController();
   final TextEditingController _tSenha = TextEditingController();
   final FocusNode _focusSenha = FocusNode();
-  final StreamController _streamController = StreamController<bool>();
+
+  final LoginBloc _bloc = LoginBloc();
 
   @override
   void initState() {
     super.initState();
+    _loadUsuario();
+  }
 
-    Future<Usuario> future = Usuario.get();
-    future.then((Usuario user) {
-      if (user != null) {
-        push(context, HomePage());
-      }
-    });
+   _loadUsuario() async {
+    Usuario user = await Usuario.get();
+    if (user != null) {
+      push(context, HomePage());
+    }
   }
 
   @override
@@ -72,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 20,
             ),
             StreamBuilder<bool>(
-                stream: _streamController.stream,
+                stream: _bloc.user,
                 initialData: false,
                 builder: (context, snapshot) {
                   return Button("Login", _onClickLogin, snapshot.data);
@@ -98,19 +99,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onClickLogin() async {
-    _streamController.add(true);
     if (!_formKey.currentState.validate()) {
-      _streamController.add(false);
       return;
     }
     ApiResponse<Usuario> response =
-        await LoginApi.login(_tLogin.text, _tSenha.text);
+        await _bloc.login(_tLogin.text, _tSenha.text);
     if (response.ok) {
       push(context, HomePage(), replace: true);
     } else {
       alert(context, response.msg);
     }
-    _streamController.add(false);
     return;
   }
 
@@ -118,6 +116,6 @@ class _LoginPageState extends State<LoginPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _streamController.close();
+    _bloc.dispose();
   }
 }
