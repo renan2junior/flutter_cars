@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro_page.dart';
@@ -18,31 +20,50 @@ class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
   List<Carro> carros;
 
+final _streamController = StreamController<List<Carro>>();
+
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    _loadData();
+    _loadCarros();
   }
 
-  _loadData() async {
-    await CarroApi.getCarros(widget.tipo).then((List<Carro> carros) {
-      setState(() {
-        this.carros = carros;
-      });
-    });
+  _loadCarros() async {
+    List<Carro> carros = await CarroApi.getCarros(widget.tipo);
+    _streamController.add(carros);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    if (this.carros == null) {
-      return Center(
-        child: CircularProgressIndicator(),
-      );
-    } else {
-      return _listView(carros);
-    }
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text(
+              "Não foi possivel acessar os dados.",
+              style: TextStyle(
+                color: Colors.red,
+                fontSize: 20,
+              ),
+            ),
+          );
+        }
+        if (!snapshot.hasData) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          // print(snapshot.data);
+          List<Carro> carros = snapshot.data;
+          // print(carros);
+          return _listView(carros);
+        }
+      },
+    );
   }
 
   Container _listView(List<Carro> carros) {
