@@ -30,10 +30,11 @@ class Usuario {
   // Criado para recuperar o usuario.
   static Future<Usuario> get() async {
     String userString = await Prefs.getString("USER");
-    return fromJson(userString);
-    // Map userMap = json.decode(userString);
-    // String toJson() => json.encode(toMap());
-    //static Usuario fromJson(String source) => fromMap(json.decode(source));
+    return userString.isEmpty ? null : fromJson(userString);
+  }
+  // Limpar os dados do usuario nas prefs
+  static void clear() {
+    Prefs.setString("USER", "");
   }
 
   Usuario copyWith({
@@ -109,4 +110,6 @@ class Usuario {
       token.hashCode ^
       roles.hashCode;
   }
+
+  
 }

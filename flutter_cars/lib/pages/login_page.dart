@@ -17,14 +17,25 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController tLogin = TextEditingController(text: "admin");
-  final TextEditingController tSenha = TextEditingController(text: "123");
+  final TextEditingController _tLogin = TextEditingController();
+  final TextEditingController _tSenha = TextEditingController();
   final FocusNode _focusSenha = FocusNode();
   bool _showProgress = false;
 
   @override
   void initState() {
     super.initState();
+
+    Future<Usuario> future = Usuario.get();
+    future.then((Usuario user){
+      if(user != null){
+        push(context, HomePage());
+      }
+      // setState(() {
+      // _tLogin.text = user.login;
+        
+      // });
+    });
   }
 
   @override
@@ -47,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             AppText("Login", "Entre com o seu login.",
                 validator: _validatorLogin,
-                tController: tLogin,
+                tController: _tLogin,
                 textInputType: TextInputType.emailAddress,
                 nextFocus: _focusSenha),
             SizedBox(
@@ -56,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
             AppText("Senha", "Entre com a sua senha",
                 validator: _validatorSenha,
                 password: true,
-                tController: tSenha,
+                tController: _tSenha,
                 textInputType: TextInputType.number,
                 focusNode: _focusSenha),
             SizedBox(
@@ -94,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
     ApiResponse<Usuario> response =
-        await LoginApi.login(tLogin.text, tSenha.text);
+        await LoginApi.login(_tLogin.text, _tSenha.text);
     if (response.ok) {
       push(context, HomePage(), replace: true);
     } else {
