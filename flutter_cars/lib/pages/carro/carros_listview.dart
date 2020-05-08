@@ -1,11 +1,10 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_page.dart';
 import 'package:flutter_cars/pages/carro/carros_bloc.dart';
-import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/utils/nav.dart';
+import 'package:flutter_cars/widgets/test_error.dart';
 
 class CarrosListView extends StatefulWidget {
   // CarrosListView({Key key}) : super(key: key);
@@ -38,15 +37,7 @@ class _CarrosListViewState extends State<CarrosListView>
       stream: _bloc.stream,
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasError) {
-          return Center(
-            child: Text(
-              "Não foi possivel acessar os dados.",
-              style: TextStyle(
-                color: Colors.red,
-                fontSize: 20,
-              ),
-            ),
-          );
+          return TestError("Ocorreu um erro na conexão.");
         }
         if (!snapshot.hasData) {
           return Center(
