@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/home_page.dart';
@@ -20,21 +22,17 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _tLogin = TextEditingController();
   final TextEditingController _tSenha = TextEditingController();
   final FocusNode _focusSenha = FocusNode();
-  bool _showProgress = false;
+  final StreamController _streamController = StreamController<bool>();
 
   @override
   void initState() {
     super.initState();
 
     Future<Usuario> future = Usuario.get();
-    future.then((Usuario user){
-      if(user != null){
+    future.then((Usuario user) {
+      if (user != null) {
         push(context, HomePage());
       }
-      // setState(() {
-      // _tLogin.text = user.login;
-        
-      // });
     });
   }
 
@@ -73,7 +71,12 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(
               height: 20,
             ),
-            Button("Login", _onClickLogin, _showProgress),
+            StreamBuilder<bool>(
+                stream: _streamController.stream,
+                initialData: false,
+                builder: (context, snapshot) {
+                  return Button("Login", _onClickLogin, snapshot.data);
+                }),
           ],
         ),
       ),
@@ -95,13 +98,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _onClickLogin() async {
-    setState(() {
-      _showProgress = true;
-    });
+    _streamController.add(true);
     if (!_formKey.currentState.validate()) {
-      setState(() {
-        _showProgress = false;
-      });
+      _streamController.add(false);
       return;
     }
     ApiResponse<Usuario> response =
@@ -111,9 +110,7 @@ class _LoginPageState extends State<LoginPage> {
     } else {
       alert(context, response.msg);
     }
-    setState(() {
-      _showProgress = false;
-    });
+    _streamController.add(false);
     return;
   }
 }
