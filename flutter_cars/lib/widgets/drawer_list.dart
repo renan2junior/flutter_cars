@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cars/pages/home_page.dart';
+import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/login_page.dart';
 import 'package:flutter_cars/utils/nav.dart';
 
@@ -12,14 +12,28 @@ class DrawerList extends StatefulWidget {
 
 class _DrawerListState extends State<DrawerList> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    Future<Usuario> future = Usuario.get();
+
     return SafeArea(
       child: Drawer(
         child: ListView(
           children: <Widget>[
-            UserAccountsDrawerHeader(
-              accountName: Text("Renan Junior"),
-              accountEmail: Text("renan2junior@gmail.com"),
+            FutureBuilder<Usuario>(
+              future: future,
+              builder: (BuildContext context, AsyncSnapshot<Usuario> snap) {
+                Usuario user = snap.data;
+                return user != null
+                    ? _header(snap.data)
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      );
+              },
             ),
             ListTile(
               title: Text("Item 1"),
@@ -39,6 +53,14 @@ class _DrawerListState extends State<DrawerList> {
           ],
         ),
       ),
+    );
+  }
+
+  UserAccountsDrawerHeader _header(Usuario user) {
+    return UserAccountsDrawerHeader(
+      currentAccountPicture: Image.network(user.urlFoto),
+      accountName: Text(user.nome),
+      accountEmail: Text(user.email),
     );
   }
 

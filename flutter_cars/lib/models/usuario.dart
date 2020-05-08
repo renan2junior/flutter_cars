@@ -1,35 +1,56 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_cars/utils/prefs.dart';
 
 class Usuario {
   String login;
   String nome;
   String email;
+  String urlFoto;
   String token;
   List<String> roles;
 
-  Usuario(
+  Usuario({
     this.login,
     this.nome,
     this.email,
+    this.urlFoto,
     this.token,
     this.roles,
-  );
+  });
+
+  
+  
+  // Criado para savar o usuário nas preferencias
+  // Criado por mim.
+  void save() {
+      Prefs.setString("USER", this.toJson());
+  }
+  // Criado para recuperar o usuario.
+  static Future<Usuario> get() async {
+    String userString = await Prefs.getString("USER");
+    return fromJson(userString);
+    // Map userMap = json.decode(userString);
+    // String toJson() => json.encode(toMap());
+    //static Usuario fromJson(String source) => fromMap(json.decode(source));
+  }
 
   Usuario copyWith({
     String login,
     String nome,
     String email,
+    String urlFoto,
     String token,
     List<String> roles,
   }) {
     return Usuario(
-      login ?? this.login,
-      nome ?? this.nome,
-      email ?? this.email,
-      token ?? this.token,
-      roles ?? this.roles,
+      login: login ?? this.login,
+      nome: nome ?? this.nome,
+      email: email ?? this.email,
+      urlFoto: urlFoto ?? this.urlFoto,
+      token: token ?? this.token,
+      roles: roles ?? this.roles,
     );
   }
 
@@ -38,6 +59,7 @@ class Usuario {
       'login': login,
       'nome': nome,
       'email': email,
+      'urlFoto': urlFoto,
       'token': token,
       'roles': roles,
     };
@@ -47,11 +69,12 @@ class Usuario {
     if (map == null) return null;
   
     return Usuario(
-      map['login'],
-      map['nome'],
-      map['email'],
-      map['token'],
-      List<String>.from(map['roles']),
+      login: map['login'],
+      nome: map['nome'],
+      email: map['email'],
+      urlFoto: map['urlFoto'],
+      token: map['token'],
+      roles: List<String>.from(map['roles']),
     );
   }
 
@@ -61,7 +84,7 @@ class Usuario {
 
   @override
   String toString() {
-    return 'Usuario(login: $login, nome: $nome, email: $email, token: $token, roles: $roles)';
+    return 'Usuario(login: $login, nome: $nome, email: $email, urlFoto: $urlFoto, token: $token, roles: $roles)';
   }
 
   @override
@@ -72,6 +95,7 @@ class Usuario {
       o.login == login &&
       o.nome == nome &&
       o.email == email &&
+      o.urlFoto == urlFoto &&
       o.token == token &&
       listEquals(o.roles, roles);
   }
@@ -81,6 +105,7 @@ class Usuario {
     return login.hashCode ^
       nome.hashCode ^
       email.hashCode ^
+      urlFoto.hashCode ^
       token.hashCode ^
       roles.hashCode;
   }

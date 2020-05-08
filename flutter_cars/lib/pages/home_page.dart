@@ -22,10 +22,15 @@ class _HomePageState extends State<HomePage>
   }
 
   _initTabs() async {
+    int tabIdx = await Prefs.getInt("tab");
+
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = await Prefs.getInt("tab");
+
+    setState(() {
+      _tabController.index = tabIdx;
+    });
+
     _tabController.addListener(() {
-      print("tab ${_tabController.index}");
       Prefs.setInt("tab", _tabController.index);
     });
   }
@@ -35,26 +40,32 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       appBar: AppBar(
         title: Text("Carros"),
-        bottom: TabBar(controller: _tabController, tabs: [
-          Tab(
-            text: "Clássicos",
-          ),
-          Tab(
-            text: "Esportivos",
-          ),
-          Tab(
-            text: "Luxo",
-          ),
-        ]),
+        bottom: _tabController == null
+            ? null
+            : TabBar(controller: _tabController, tabs: [
+                Tab(
+                  text: "Clássicos",
+                ),
+                Tab(
+                  text: "Esportivos",
+                ),
+                Tab(
+                  text: "Luxo",
+                ),
+              ]),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: <Widget>[
-          CarrosListView(TipoCarro.classicos),
-          CarrosListView(TipoCarro.esportivos),
-          CarrosListView(TipoCarro.luxo),
-        ],
-      ),
+      body: _tabController == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : TabBarView(
+              controller: _tabController,
+              children: <Widget>[
+                CarrosListView(TipoCarro.classicos),
+                CarrosListView(TipoCarro.esportivos),
+                CarrosListView(TipoCarro.luxo),
+              ],
+            ),
       drawer: DrawerList(),
     );
   }

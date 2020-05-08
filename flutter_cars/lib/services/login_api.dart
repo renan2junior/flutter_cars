@@ -19,6 +19,10 @@ class LoginApi {
       Map _response = json.decode(response.body);
       if (response.statusCode == 200) {
         final user = Usuario.fromMap(_response);
+        user.save();
+        Usuario user2 = await Usuario.get();
+        print("USUARIO OBJETO ==> $user2");
+
         return ApiResponse.ok(user);
       }
       // print("ERROR ===> $_response");
