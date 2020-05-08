@@ -69,4 +69,10 @@ class _DrawerListState extends State<DrawerList> {
     Navigator.pop(context);
     push(context, LoginPage(), replace: true);
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 }

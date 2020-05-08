@@ -131,4 +131,11 @@ final _streamController = StreamController<List<Carro>>();
   void _onClickDetalhes(Carro carro) {
     push(context, CarroPage(carro));
   }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _streamController.close();
+  }
 }
