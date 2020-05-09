@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_page.dart';
-import 'package:flutter_cars/pages/carro/carros_bloc.dart';
+import 'package:flutter_cars/pages/carro/carros_model.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/test_error.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 
 class CarrosListView extends StatefulWidget {
   // CarrosListView({Key key}) : super(key: key);
@@ -20,37 +20,35 @@ class _CarrosListViewState extends State<CarrosListView>
     with AutomaticKeepAliveClientMixin<CarrosListView> {
   List<Carro> carros;
 
-  final _bloc = CarrosBloc();
+  final _model = CarrosModel();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _bloc.loadCarros(widget.tipo);
+    _fetch();
+  }
+
+  void _fetch() {
+    _model.loadCarros(widget.tipo);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    return StreamBuilder(
-      stream: _bloc.stream,
-      builder: (BuildContext context, snapshot) {
-        if (snapshot.hasError) {
-          return TestError("Ocorreu um erro na conexão.");
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          // print(snapshot.data);
-          List<Carro> carros = snapshot.data;
-          // print(carros);
-          return _listView(carros);
-        }
-      },
-    );
+    return Observer(builder: (_) {
+      List<Carro> carros = _model.carros;
+      if (_model.error != null) {
+        return TestError("Deu ruimm!", onPressed: _fetch,);
+      }
+      if (carros == null) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      }
+      return _listView(carros);
+    });
   }
 
   Container _listView(List<Carro> carros) {
@@ -117,12 +115,5 @@ class _CarrosListViewState extends State<CarrosListView>
 
   void _onClickDetalhes(Carro carro) {
     push(context, CarroPage(carro));
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _bloc.dispose();
   }
 }
