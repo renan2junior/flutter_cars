@@ -15,11 +15,13 @@ class LoripsumApi {
 
 class ApiBloc {
   final StreamController<String> _streamController = StreamController<String>();
-
+  static String textCache;
   Stream<String> get stream => _streamController.stream;
 
   fetch() async {
-    String text = await LoripsumApi.get();
+
+    String text = textCache ?? await LoripsumApi.get();
+    textCache = text;
     _streamController.add(text);
   }
 
