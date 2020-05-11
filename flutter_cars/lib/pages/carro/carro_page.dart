@@ -2,18 +2,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/services/loripsum_api.dart';
 
-class CarroPage extends StatelessWidget {
+class CarroPage extends StatefulWidget {
   // const CarroPage({Key key}) : super(key: key);
 
   Carro carro;
-
   CarroPage(this.carro);
+
+  @override
+  _CarroPageState createState() => _CarroPageState();
+}
+
+class _CarroPageState extends State<CarroPage> {
+  ApiBloc _bloc = ApiBloc();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _bloc.fetch();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(carro.nome),
+        title: Text(widget.carro.nome),
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.place),
@@ -53,7 +66,7 @@ class CarroPage extends StatelessWidget {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          Image.network(carro.urlFoto),
+          Image.network(widget.carro.urlFoto),
           _bloco1(),
           SizedBox(
             height: 10,
@@ -72,14 +85,14 @@ class CarroPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              carro.nome,
+              widget.carro.nome,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Text(
-              carro.tipo,
+              widget.carro.tipo,
               style: TextStyle(
                 fontSize: 12,
               ),
@@ -110,12 +123,12 @@ class CarroPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(carro.descricao),
+        Text(widget.carro.descricao),
         SizedBox(
           height: 10,
         ),
-        FutureBuilder<String>(
-          future: LoripsumApi.get(),
+        StreamBuilder<String>(
+          stream: _bloc.stream,
           builder: (BuildContext context, AsyncSnapshot snap) {
             if (!snap.hasData) {
               return Center(
@@ -154,4 +167,10 @@ class CarroPage extends StatelessWidget {
   void _onClickFavotite() {}
 
   void _onClickShare() {}
+
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.diposed();
+  }
 }
