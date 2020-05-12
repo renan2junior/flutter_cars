@@ -1,59 +1,14 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_page.dart';
-import 'package:flutter_cars/pages/carro/carros_bloc.dart';
 import 'package:flutter_cars/utils/nav.dart';
-import 'package:flutter_cars/widgets/test_error.dart';
 
-class CarrosListView extends StatefulWidget {
-  // CarrosListView({Key key}) : super(key: key);
-
-  String tipo;
-  CarrosListView(this.tipo);
-
-  @override
-  _CarrosListViewState createState() => _CarrosListViewState();
-}
-
-class _CarrosListViewState extends State<CarrosListView>
-    with AutomaticKeepAliveClientMixin<CarrosListView> {
+class CarrosListView extends StatelessWidget {
   List<Carro> carros;
 
-  final _bloc = CarrosBloc();
+  CarrosListView(this.carros);
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _bloc.loadCarros(widget.tipo);
-  }
-
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
-
-    return StreamBuilder(
-      stream: _bloc.stream,
-      builder: (BuildContext context, snapshot) {
-        if (snapshot.hasError) {
-          return TestError("Ocorreu um erro na conexão.");
-        }
-        if (!snapshot.hasData) {
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        } else {
-          // print(snapshot.data);
-          List<Carro> carros = snapshot.data;
-          // print(carros);
-          return _listView(carros);
-        }
-      },
-    );
-  }
-
-  Container _listView(List<Carro> carros) {
     return Container(
         padding: EdgeInsets.all(16),
         child: ListView.builder(
@@ -95,7 +50,7 @@ class _CarrosListViewState extends State<CarrosListView>
                         FlatButton(
                           child: const Text('Detalhes'),
                           onPressed: () {
-                            _onClickDetalhes(carro);
+                            _onClickDetalhes(context, carro);
                           },
                         ),
                         FlatButton(
@@ -112,17 +67,7 @@ class _CarrosListViewState extends State<CarrosListView>
         ));
   }
 
-  @override
-  bool get wantKeepAlive => true;
-
-  void _onClickDetalhes(Carro carro) {
+  void _onClickDetalhes(BuildContext context, Carro carro) {
     push(context, CarroPage(carro));
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _bloc.dispose();
   }
 }

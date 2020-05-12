@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/pages/carro/carros_listview.dart';
+import 'package:flutter_cars/pages/carro/carros_page.dart';
 import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/widgets/drawer_list.dart';
 import 'package:flutter_cars/utils/prefs.dart';
@@ -61,9 +62,9 @@ class _HomePageState extends State<HomePage>
           : TabBarView(
               controller: _tabController,
               children: <Widget>[
-                CarrosListView(TipoCarro.classicos),
-                CarrosListView(TipoCarro.esportivos),
-                CarrosListView(TipoCarro.luxo),
+                CarrosPage(TipoCarro.classicos),
+                CarrosPage(TipoCarro.esportivos),
+                CarrosPage(TipoCarro.luxo),
               ],
             ),
       drawer: DrawerList(),
