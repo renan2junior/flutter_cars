@@ -42,18 +42,25 @@ class _CarrosPageState extends State<CarrosPage>
           // print(snapshot.data);
           List<Carro> carros = snapshot.data;
           // print(carros);
-          return CarrosListView(carros);
+          return RefreshIndicator(
+            child: CarrosListView(carros),
+            onRefresh: _onRefresh,
+          );
         }
       },
     );
   }
 
+  Future<void> _onRefresh() {
+    return _bloc.loadCarros(widget.tipo);
+  }
+
   @override
   bool get wantKeepAlive => true;
 
-  // @override
-  // void dispose() {
-  //   super.dispose();
-  //   _bloc.dispose();
-  // }
+  @override
+  void dispose() {
+    super.dispose();
+    _bloc.dispose();
+  }
 }
