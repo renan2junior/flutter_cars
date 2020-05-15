@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -30,6 +31,13 @@ class DatabaseHelper {
   }
 
   void _onCreate(Database db, int newVersion) async {
+
+    String stringTables = await rootBundle.loadString("assets/sql/create.sql");
+
+    List<String> listTable = stringTables.split(";");
+
+    listTable.forEach((table) async => await db.execute(table));
+
     await db.execute(
         'CREATE TABLE carro(id INTEGER PRIMARY KEY, tipo TEXT, nome TEXT'
         ', descricao TEXT, urlFoto TEXT, urlVideo TEXT, latitude TEXT, longitude TEXT)');
