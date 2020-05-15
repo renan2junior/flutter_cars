@@ -28,8 +28,7 @@ class CarroApi {
       final List<Carro> carros =
           list.map<Carro>((map) => Carro.fromMap(map)).toList();
 
-      final dao = CarroDAO();
-      carros.forEach(dao.save);     
+    
       
       return carros;
     } catch (error, exception) {

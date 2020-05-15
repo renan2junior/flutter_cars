@@ -14,6 +14,8 @@ class CarrosBloc extends SimpleBloc<List<Carro>> {
         return carros;
       }
       List<Carro> carros = await CarroApi.getCarros(tipo);
+      final dao = CarroDAO();
+      carros.forEach(dao.save);     
       add(carros);
       return carros;
     } catch (error) {
