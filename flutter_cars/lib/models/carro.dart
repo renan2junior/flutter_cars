@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-class Carro {
+import 'package:flutter_cars/models/entity.dart';
+
+class Carro extends Entity<Carro> {
   int id;
   String nome;
   String tipo;
