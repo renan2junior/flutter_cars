@@ -14,4 +14,9 @@ class FavoritosService {
     }
     dao.findAll().then((list)=>print(list));
   }
+
+  static Future<List<Carro>> getCarros() async{
+    List<Carro> carros = [];
+    return carros;
+  }
 }
