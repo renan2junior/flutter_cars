@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -36,11 +37,13 @@ class DatabaseHelper {
 
     List<String> listTable = stringTables.split(";");
 
-    listTable.forEach((table) async => await db.execute(table));
+    listTable.forEach((table) async => 
+        table.trim().isNotEmpty?await db.execute(table):false
+      );
 
-    await db.execute(
-        'CREATE TABLE carro(id INTEGER PRIMARY KEY, tipo TEXT, nome TEXT'
-        ', descricao TEXT, urlFoto TEXT, urlVideo TEXT, latitude TEXT, longitude TEXT)');
+    // await db.execute(
+    //     'CREATE TABLE carro(id INTEGER PRIMARY KEY, tipo TEXT, nome TEXT'
+    //     ', descricao TEXT, urlFoto TEXT, urlVideo TEXT, latitude TEXT, longitude TEXT)');
   }
 
   Future<FutureOr<void>> _onUpgrade(Database db, int oldVersion, int newVersion) async {

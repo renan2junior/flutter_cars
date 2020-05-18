@@ -1,6 +1,6 @@
 
 import 'package:flutter_cars/models/carro.dart';
-import 'package:flutter_cars/pages/favoritos/dao.dart';
+import 'package:flutter_cars/utils/sql/dao.dart';
 
 class CarroDAO extends DAO<Carro>{
   @override

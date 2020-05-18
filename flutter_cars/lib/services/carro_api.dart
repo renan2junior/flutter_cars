@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/models/usuario.dart';
-import 'package:flutter_cars/pages/favoritos/carro_dao.dart';
 import 'package:http/http.dart' as http;
 
 class TipoCarro {

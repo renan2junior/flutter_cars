@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/carro/home_page.dart';
-import 'package:flutter_cars/pages/favoritos/db_helper.dart';
+import 'package:flutter_cars/utils/sql/db_helper.dart';
 import 'package:flutter_cars/pages/login/login_page.dart';
 import 'package:flutter_cars/utils/nav.dart';
 
@@ -16,13 +16,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(Duration(seconds: 1), () {
-    //   push(context, LoginPage());
-    // });
-    // DatabaseHelper.getInstance().db;
-
     initFutures();
-
   }
 
   Future<Usuario> getUser() => Usuario.get();

@@ -1,5 +1,5 @@
 import 'package:flutter_cars/models/carro.dart';
-import 'package:flutter_cars/pages/favoritos/carro_dao.dart';
+import 'package:flutter_cars/pages/carro/carro_dao.dart';
 import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/utils/network.dart';
 import 'package:flutter_cars/utils/simple_bloc.dart';
