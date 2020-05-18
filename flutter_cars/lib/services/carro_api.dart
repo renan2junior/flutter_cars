@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/services/api_response.dart';
+import 'package:flutter_cars/services/upload_api.dart';
 import 'package:flutter_cars/utils/http_helper.dart' as http;
 
 class TipoCarro {
@@ -22,7 +24,15 @@ class CarroApi {
     return ApiResponse.error(mapResponse["error"]);
   }
 
-  static Future<ApiResponse<bool>> save(Carro carro) async {
+  static Future<ApiResponse<bool>> save(Carro carro, File file) async {
+    if(file!=null){
+      ApiResponse<String> response = await UploadApi.upload(file);
+      if(response.ok){
+        String url = response.result;
+        carro.urlFoto = url;
+      }
+    }
+
     String stringJson = carro.toJson();
     var url = "http://carros-springboot.herokuapp.com/api/v2/carros";
     if (carro.id != null) {

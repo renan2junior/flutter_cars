@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/app_text.dart';
 import 'package:flutter_cars/widgets/button.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CarroFormPage extends StatefulWidget {
   final Carro carro;
@@ -28,6 +31,8 @@ class _CarroFormPageState extends State<CarroFormPage> {
   int _radioIndex = 0;
 
   var _showProgress = false;
+
+  File _file;
 
   Carro get carro => widget.carro;
 
@@ -112,14 +117,19 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   _headerFoto() {
-    return carro != null
-        ? CachedNetworkImage(
-            imageUrl: carro.urlFoto,
-          )
-        : Image.asset(
-            "assets/images/camera.png",
-            height: 150,
-          );
+    return InkWell(
+      onTap: _onClickfoto,
+      child: _file != null 
+          ? Image.file(_file)
+          : carro != null
+          ? CachedNetworkImage(
+              imageUrl: carro.urlFoto,
+            )
+          : Image.asset(
+              "assets/images/camera.png",
+              height: 150,
+            ),
+    );
   }
 
   _radioTipo() {
@@ -185,6 +195,16 @@ class _CarroFormPageState extends State<CarroFormPage> {
     }
   }
 
+  void _onClickfoto() async {
+   print("ok");
+   File file = await ImagePicker.pickImage(source: ImageSource.camera);
+   if(file!=null){
+     setState(() {
+       this._file = file;
+     });
+   }
+  }
+
   _onClickSalvar() async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -198,7 +218,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Carro: $c");
 
-    ApiResponse<bool> response = await CarroApi.save(c);
+    ApiResponse<bool> response = await CarroApi.save(c, _file);
     if (response.ok) {
       alert(
         context,
@@ -225,4 +245,6 @@ class _CarroFormPageState extends State<CarroFormPage> {
 
     print("Fim.");
   }
+
+  
 }
