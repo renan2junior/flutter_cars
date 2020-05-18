@@ -17,13 +17,21 @@ class CarroPage extends StatefulWidget {
 class _CarroPageState extends State<CarroPage> {
   ApiBloc _bloc = ApiBloc();
 
+  Color color = Colors.grey;
+
   Carro get carro => widget.carro;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _bloc.fetch();
+    FavoritosService.isFavorito(carro).then((isFavorito){
+      setState(() {
+        color = isFavorito ? Colors.red : Colors.grey;
+      });
+    });
+    
+    
   }
 
   @override
@@ -109,7 +117,7 @@ class _CarroPageState extends State<CarroPage> {
               icon: Icon(
                 Icons.favorite,
                 size: 30,
-                color: Colors.red,
+                color: color,
               ),
               onPressed: _onClickFavotite,
             ),
@@ -169,7 +177,10 @@ class _CarroPageState extends State<CarroPage> {
   }
 
   void _onClickFavotite() async {
-    FavoritosService.Favoritar(carro);
+    bool favorito = await FavoritosService.Favoritar(carro);
+    setState(() {
+      color = favorito ? Colors.red : Colors.grey; 
+    });
   }
 
   void _onClickShare() {}
