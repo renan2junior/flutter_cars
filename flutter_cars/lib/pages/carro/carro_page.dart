@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_form_page.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_service.dart';
+import 'package:flutter_cars/services/api_response.dart';
+import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/services/loripsum_api.dart';
+import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 
 class CarroPage extends StatefulWidget {
@@ -78,7 +81,9 @@ class _CarroPageState extends State<CarroPage> {
       padding: EdgeInsets.all(16),
       child: ListView(
         children: <Widget>[
-          CachedNetworkImage(imageUrl: widget.carro.urlFoto),
+          CachedNetworkImage(
+              imageUrl: widget.carro.urlFoto ??
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDeC_pIl9rURI0CLKa70og1CQOv-JMH8LzLpN5pDC6EO214Mu9Eg&s"),
           _bloco1(),
           SizedBox(
             height: 10,
@@ -161,6 +166,21 @@ class _CarroPageState extends State<CarroPage> {
 
   void _onClickVideo() {}
 
+  void deletar() async {
+    ApiResponse<bool> response = await CarroApi.delete(carro);
+    if (response.ok) {
+      alert(
+        context,
+        "Carro deletado com sucesso",
+        callback: () {
+          pop(context);
+        },
+      );
+    } else {
+      alert(context, response.msg);
+    }
+  }
+
   _onClickPopUpMenu(String value) {
     switch (value) {
       case 'Editar':
@@ -174,7 +194,7 @@ class _CarroPageState extends State<CarroPage> {
         print(value);
         break;
       case 'Deletar':
-        print(value);
+        deletar();
         break;
       default:
     }

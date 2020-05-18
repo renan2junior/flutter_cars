@@ -12,6 +12,26 @@ class TipoCarro {
 }
 
 class CarroApi {
+
+  static Future<ApiResponse<bool>> delete(Carro carro) async {
+    Usuario user = await Usuario.get();
+
+    Map<String, String> headers = {
+      "Authorization":" Bearer ${user.token}"
+    };
+
+    var url = "http://carros-springboot.herokuapp.com/api/v2/carros/${carro.id}";
+
+    var response = await http.delete(url, headers: headers);
+
+    if(response.statusCode == 200 ){
+      return ApiResponse.ok(true);
+    }
+    Map mapResponse  = json.decode(response.body);
+    return ApiResponse.error(mapResponse["error"]);
+
+  }
+
   static Future<ApiResponse<bool>> save(Carro carro) async {
     Usuario user = await Usuario.get();
 
