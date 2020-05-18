@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_cars/pages/carro/carros_listview.dart';
+import 'package:flutter_cars/pages/carro/carro_form_page.dart';
 import 'package:flutter_cars/pages/carro/carros_page.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_page.dart';
 import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/utils/alert.dart';
+import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/drawer_list.dart';
 import 'package:flutter_cars/utils/prefs.dart';
 
@@ -82,6 +83,6 @@ class _HomePageState extends State<HomePage>
   }
 
   void _onClickAddCarros() {
-    alert(context, "Add carros");
+    push(context, CarroFormPage());
   }
 }
