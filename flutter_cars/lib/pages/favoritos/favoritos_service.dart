@@ -1,5 +1,6 @@
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/models/favorito.dart';
+import 'package:flutter_cars/pages/carro/carro_dao.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_dao.dart';
 
 class FavoritosService {
@@ -16,7 +17,7 @@ class FavoritosService {
   }
 
   static Future<List<Carro>> getCarros() async{
-    List<Carro> carros = [];
+    List<Carro> carros = await CarroDAO().query("select * from carro c, favorito f where c.id = f.id");
     return carros;
-  }
+  } 
 }
