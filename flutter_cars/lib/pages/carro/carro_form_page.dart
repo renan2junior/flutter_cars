@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
+import 'package:flutter_cars/widgets/app_text.dart';
+import 'package:flutter_cars/widgets/button.dart';
 
 class CarroFormPage extends StatefulWidget {
   final Carro carro;
@@ -85,47 +87,21 @@ class _CarroFormPageState extends State<CarroFormPage> {
           ),
           _radioTipo(),
           Divider(),
-          TextFormField(
-            controller: tNome,
-            keyboardType: TextInputType.text,
+          AppText(
+            "Nome",
+            "",
+            tController: tNome,
+            textInputType: TextInputType.text,
             validator: _validateNome,
-            style: TextStyle(color: Colors.blue, fontSize: 20),
-            decoration: new InputDecoration(
-              hintText: '',
-              labelText: 'Nome',
-            ),
           ),
-          TextFormField(
-            controller: tDesc,
-            keyboardType: TextInputType.text,
-            style: TextStyle(
-              color: Colors.blue,
-              fontSize: 20,
-            ),
-            decoration: new InputDecoration(
-              hintText: '',
-              labelText: 'Descrição',
-            ),
+          AppText(
+            "Nome",
+            "",
+            tController: tDesc,
+            textInputType: TextInputType.text,
+            validator: _validateNome,
           ),
-          Container(
-            height: 50,
-            margin: new EdgeInsets.only(top: 20.0),
-            child: RaisedButton(
-              color: Colors.blue,
-              child: _showProgress
-                  ? CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                    )
-                  : Text(
-                      "Salvar",
-                      style: new TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                      ),
-                    ),
-              onPressed: _onClickSalvar,
-            ),
-          )
+          Button("Salvar", _onClickSalvar, _showProgress),
         ],
       ),
     );
