@@ -12,31 +12,29 @@ class TipoCarro {
 }
 
 class CarroApi {
-
   static Future<ApiResponse<bool>> save(Carro carro) async {
-
     Usuario user = await Usuario.get();
 
     Map<String, String> headers = {
-      "Content-Type":"application/json",
+      "Content-Type": "application/json",
       "Authorization": "Bearer ${user.token}"
     };
-  String stringJson = carro.toJson();
-
+    String stringJson = carro.toJson();
     var url = "http://carros-springboot.herokuapp.com/api/v2/carros";
-
-    var response = await http.post(url, body: stringJson, headers: headers);
-
-    if(response.statusCode == 201){
+    if (carro.id != null) {
+      url = url + "/${carro.id}";
+    }
+    var response = await (carro.id == null
+        ? http.post(url, body: stringJson, headers: headers)
+        : http.put(url, body: stringJson, headers: headers));
+    if (response.statusCode == 201 || response.statusCode == 200) {
       Map mapResponse = json.decode(response.body);
       Carro carro = Carro.fromMap(mapResponse);
       print("Carro ===> ${carro.id}");
-
       return ApiResponse.ok(true);
     }
     Map mapResponse = json.decode(response.body);
     return ApiResponse.error(mapResponse["error"]);
-
   }
 
   static Future<List<Carro>> getCarros(String tipo) async {
@@ -61,4 +59,3 @@ class CarroApi {
     }
   }
 }
- 
