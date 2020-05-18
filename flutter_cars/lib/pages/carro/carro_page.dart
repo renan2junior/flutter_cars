@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
+import 'package:flutter_cars/pages/carro/carro_form_page.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_service.dart';
 import 'package:flutter_cars/services/loripsum_api.dart';
+import 'package:flutter_cars/utils/nav.dart';
 
 class CarroPage extends StatefulWidget {
   // const CarroPage({Key key}) : super(key: key);
@@ -25,13 +27,11 @@ class _CarroPageState extends State<CarroPage> {
   void initState() {
     super.initState();
     _bloc.fetch();
-    FavoritosService.isFavorito(carro).then((isFavorito){
+    FavoritosService.isFavorito(carro).then((isFavorito) {
       setState(() {
         color = isFavorito ? Colors.red : Colors.grey;
       });
     });
-    
-    
   }
 
   @override
@@ -164,7 +164,11 @@ class _CarroPageState extends State<CarroPage> {
   _onClickPopUpMenu(String value) {
     switch (value) {
       case 'Editar':
-        print(value);
+        push(
+            context,
+            CarroFormPage(
+              carro: carro,
+            ));
         break;
       case 'Shered':
         print(value);
@@ -179,7 +183,7 @@ class _CarroPageState extends State<CarroPage> {
   void _onClickFavotite() async {
     bool favorito = await FavoritosService.Favoritar(carro);
     setState(() {
-      color = favorito ? Colors.red : Colors.grey; 
+      color = favorito ? Colors.red : Colors.grey;
     });
   }
 
