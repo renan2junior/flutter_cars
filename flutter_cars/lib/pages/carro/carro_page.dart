@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
+import 'package:flutter_cars/pages/favoritos/favoritos_service.dart';
 import 'package:flutter_cars/services/loripsum_api.dart';
 
 class CarroPage extends StatefulWidget {
@@ -15,6 +16,8 @@ class CarroPage extends StatefulWidget {
 
 class _CarroPageState extends State<CarroPage> {
   ApiBloc _bloc = ApiBloc();
+
+  Carro get carro => widget.carro;
 
   @override
   void initState() {
@@ -165,7 +168,9 @@ class _CarroPageState extends State<CarroPage> {
     }
   }
 
-  void _onClickFavotite() {}
+  void _onClickFavotite() async {
+    FavoritosService.Favoritar(carro);
+  }
 
   void _onClickShare() {}
 

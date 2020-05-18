@@ -6,6 +6,7 @@ class Favorito extends Entity {
 
   int id;
   String nome;
+  
   Favorito({
     this.id,
     this.nome,
