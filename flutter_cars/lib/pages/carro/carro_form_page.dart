@@ -196,7 +196,6 @@ class _CarroFormPageState extends State<CarroFormPage> {
   }
 
   void _onClickfoto() async {
-   print("ok");
    File file = await ImagePicker.pickImage(source: ImageSource.camera);
    if(file!=null){
      setState(() {
@@ -231,19 +230,6 @@ class _CarroFormPageState extends State<CarroFormPage> {
       alert(context, response.msg);
     }
 
-    setState(() {
-      _showProgress = true;
-    });
-
-    print("Salvar o carro $c");
-
-    await Future.delayed(Duration(seconds: 3));
-
-    setState(() {
-      _showProgress = false;
-    });
-
-    print("Fim.");
   }
 
   

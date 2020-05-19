@@ -3,6 +3,7 @@ import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carros_listview.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_bloc.dart';
 import 'package:flutter_cars/widgets/test_error.dart';
+import 'package:provider/provider.dart';
 
 class FavoritosPage extends StatefulWidget {
 
@@ -14,18 +15,19 @@ class _FavoritosPageState extends State<FavoritosPage>
     with AutomaticKeepAliveClientMixin<FavoritosPage> {
   List<Carro> carros;
 
-  final _bloc = FavoritosBloc();
+  // final _bloc = FavoritosBloc();
 
   @override
   void initState() {
     super.initState();
+    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context, listen: false);
     _bloc.fetch();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-
+    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context);
     return StreamBuilder(
       stream: _bloc.stream,
       builder: (BuildContext context, snapshot) {
@@ -50,15 +52,11 @@ class _FavoritosPageState extends State<FavoritosPage>
   }
 
   Future<void> _onRefresh() {
+    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context);
     return _bloc.fetch();
   }
 
   @override
   bool get wantKeepAlive => true;
 
-  @override
-  void dispose() {
-    super.dispose();
-    _bloc.dispose();
-  }
 }

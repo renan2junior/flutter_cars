@@ -10,7 +10,6 @@ import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 
 class CarroPage extends StatefulWidget {
-  // const CarroPage({Key key}) : super(key: key);
 
   Carro carro;
   CarroPage(this.carro);
@@ -201,7 +200,7 @@ class _CarroPageState extends State<CarroPage> {
   }
 
   void _onClickFavotite() async {
-    bool favorito = await FavoritosService.Favoritar(carro);
+    bool favorito = await FavoritosService.Favoritar(context, carro);
     setState(() {
       color = favorito ? Colors.red : Colors.grey;
     });
