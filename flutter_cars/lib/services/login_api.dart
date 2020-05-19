@@ -21,7 +21,7 @@ class LoginApi {
         final user = Usuario.fromMap(_response);
         user.save();
         Usuario user2 = await Usuario.get();
-        print("USUARIO OBJETO ==> $user2");
+        // print("USUARIO OBJETO ==> $user2");
 
         return ApiResponse.ok(user);
       }

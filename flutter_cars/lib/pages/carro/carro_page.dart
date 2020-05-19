@@ -7,6 +7,7 @@ import 'package:flutter_cars/services/api_response.dart';
 import 'package:flutter_cars/services/carro_api.dart';
 import 'package:flutter_cars/services/loripsum_api.dart';
 import 'package:flutter_cars/utils/alert.dart';
+import 'package:flutter_cars/utils/event_bus.dart';
 import 'package:flutter_cars/utils/nav.dart';
 
 class CarroPage extends StatefulWidget {
@@ -172,6 +173,7 @@ class _CarroPageState extends State<CarroPage> {
         context,
         "Carro deletado com sucesso",
         callback: () {
+          EventBus.get(context).sendEvent("Carro deletado");
           pop(context);
         },
       );

@@ -25,7 +25,7 @@ class DatabaseHelper {
   Future _initDb() async {
     String databasesPath = await getDatabasesPath();
     String path = join(databasesPath, 'carros.db');
-    print("db $path");
+    // print("db $path");
 
     var db = await openDatabase(path, version: 2, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return db;
@@ -47,7 +47,7 @@ class DatabaseHelper {
   }
 
   Future<FutureOr<void>> _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
+    // print("_onUpgrade: oldVersion: $oldVersion > newVersion: $newVersion");
 
     if(oldVersion == 1 && newVersion == 2) {
       await db.execute("alter table carro add column NOVA TEXT");

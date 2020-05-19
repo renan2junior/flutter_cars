@@ -6,7 +6,7 @@ class FavoritosBloc extends SimpleBloc<List<Carro>> {
   Future<List<Carro>> fetch() async {
     try {
       List<Carro> carros = await FavoritosService.getCarros();
-      print(carros);
+      // print(carros);
       add(carros);
       return carros;
     } catch (error) {

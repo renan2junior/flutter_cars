@@ -44,7 +44,7 @@ class CarroApi {
     if (response.statusCode == 201 || response.statusCode == 200) {
       Map mapResponse = json.decode(response.body);
       Carro carro = Carro.fromMap(mapResponse);
-      print("Carro ===> ${carro.id}");
+      // print("Carro ===> ${carro.id}");
       return ApiResponse.ok(true);
     }
     Map mapResponse = json.decode(response.body);
@@ -54,7 +54,7 @@ class CarroApi {
   static Future<List<Carro>> getCarros(String tipo) async {
     String url =
         "http://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo";
-    print(url);
+    // print(url);
     var response = await http.get(url);
     String _json = response.body;
     try {
