@@ -1,10 +1,12 @@
 import 'package:flutter_cars/utils/simple_bloc.dart';
 import 'package:provider/provider.dart';
 
-class EventBus extends SimpleBloc<String> {
+class Event{}
+
+class EventBus extends SimpleBloc<Event> {
   static EventBus get(context) => Provider.of<EventBus>(context, listen: false);
 
-  sendEvent(String event) {
+  sendEvent(Event event) {
     add(event);
   }
 }

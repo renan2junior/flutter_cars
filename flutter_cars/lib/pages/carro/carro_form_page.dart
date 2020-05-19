@@ -224,7 +224,7 @@ class _CarroFormPageState extends State<CarroFormPage> {
         context,
         "Carro salvo com sucesso",
         callback: () {
-          EventBus.get(context).sendEvent("Salvei o carro");
+          EventBus.get(context).sendEvent(CarroEvent("Salvei o carro", carro.tipo));
           pop(context);
         },
       );

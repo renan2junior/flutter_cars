@@ -173,7 +173,7 @@ class _CarroPageState extends State<CarroPage> {
         context,
         "Carro deletado com sucesso",
         callback: () {
-          EventBus.get(context).sendEvent("Carro deletado");
+          EventBus.get(context).sendEvent(CarroEvent("Deletado", carro.tipo));
           pop(context);
         },
       );

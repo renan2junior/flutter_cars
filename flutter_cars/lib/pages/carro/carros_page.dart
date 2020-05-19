@@ -21,14 +21,14 @@ class _CarrosPageState extends State<CarrosPage>
 
   final _bloc = CarrosBloc();
 
-  StreamSubscription<String> subscription;
+  StreamSubscription<Event> subscription;
 
   @override
   void initState() {
     super.initState();
     _bloc.loadCarros(widget.tipo); 
     final bus = EventBus.get(context);
-    subscription = bus.stream.listen((String s) {
+    subscription = bus.stream.listen((Event s) {
       print("Event $s");
       _bloc.loadCarros(widget.tipo);
     } );

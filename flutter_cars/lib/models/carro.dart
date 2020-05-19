@@ -1,6 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter_cars/models/entity.dart';
+import 'package:flutter_cars/utils/event_bus.dart';
+
+class CarroEvent extends Event{
+  String acao;
+  String tipo;
+
+  CarroEvent(this.acao, this.tipo);
+
+  @override
+  String toString(){
+    return "CarroEvent{acao : $acao, tipo: $tipo}";
+  }
+}
 
 class Carro extends Entity<Carro> {
   int id;
