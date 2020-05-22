@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cars/firebase/firebase_service.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/login/login_page.dart';
 import 'package:flutter_cars/utils/nav.dart';
@@ -66,13 +67,13 @@ class _DrawerListState extends State<DrawerList> {
 
   _onClickLogout(BuildContext context) {
     Usuario.clear();
+    FirebaseService().logout();
     Navigator.pop(context);
     push(context, LoginPage(), replace: true);
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }
