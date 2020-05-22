@@ -120,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    ApiResponse<Usuario> response =
+    ApiResponse response =
         await _bloc.login(_tLogin.text, _tSenha.text);
     if (response.ok) {
       push(context, HomePage(), replace: true);

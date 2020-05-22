@@ -59,8 +59,8 @@ class _DrawerListState extends State<DrawerList> {
 
   UserAccountsDrawerHeader _header(Usuario user) {
     return UserAccountsDrawerHeader(
-      currentAccountPicture: Image.network(user.urlFoto),
-      accountName: Text(user.nome),
+      currentAccountPicture: user.urlFoto != null ? Image.network(user.urlFoto): FlutterLogo(),
+      accountName: Text(user.nome ?? ""),
       accountEmail: Text(user.email),
     );
   }
