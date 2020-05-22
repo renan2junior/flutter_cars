@@ -1,12 +1,12 @@
  import 'package:flutter/material.dart';
 
-alert(BuildContext context, String msg, {Function callback}) {
+alert(BuildContext context, String title, String msg, {Function callback}) {
     showDialog(
       barrierDismissible: false,
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Carros"),
+          title: Text(title),
           content: Text(msg),
           actions: <Widget>[
             FlatButton(

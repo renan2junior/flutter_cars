@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_form_page.dart';
+import 'package:flutter_cars/pages/carro/video_page.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_service.dart';
 import 'package:flutter_cars/services/api_response.dart';
 import 'package:flutter_cars/services/carro_api.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_cars/services/loripsum_api.dart';
 import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/event_bus.dart';
 import 'package:flutter_cars/utils/nav.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarroPage extends StatefulWidget {
 
@@ -164,13 +166,21 @@ class _CarroPageState extends State<CarroPage> {
 
   void _onClickMap() {}
 
-  void _onClickVideo() {}
+  void _onClickVideo() {
+     if(carro.urlVideo != null && carro.urlVideo.isNotEmpty){
+      //  launch(carro.urlVideo);
+      push(context, VideoPage(carro));
+     }else{
+       alert(context, "Erro", "Esse carro não contém nenhum vídeo");
+     }
+  }
 
   void deletar() async {
     ApiResponse<bool> response = await CarroApi.delete(carro);
     if (response.ok) {
       alert(
         context,
+        "Carro",
         "Carro deletado com sucesso",
         callback: () {
           EventBus.get(context).sendEvent(CarroEvent("Deletado", carro.tipo));
@@ -178,7 +188,7 @@ class _CarroPageState extends State<CarroPage> {
         },
       );
     } else {
-      alert(context, response.msg);
+      alert(context, "Erro", response.msg);
     }
   }
 
