@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carro_page.dart';
 import 'package:flutter_cars/utils/nav.dart';
+import 'package:share/share.dart';
 
 class CarrosListView extends StatelessWidget {
   List<Carro> carros;
@@ -109,7 +110,7 @@ class CarrosListView extends StatelessWidget {
                 leading: Icon(Icons.share),
                 onTap: () {
                   pop(context);
-                  _onClickSharer();
+                  _onClickSharer(carro);
                 },
               )
             ],
@@ -117,7 +118,8 @@ class CarrosListView extends StatelessWidget {
         });
   }
 
-  void _onClickSharer() {
+  void _onClickSharer(Carro carro) {
     print("Shared");
+    Share.share(carro.urlFoto);
   }
 }
