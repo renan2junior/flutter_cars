@@ -33,6 +33,7 @@ dependencies:
   share: ^0.6.4+3
   url_launcher: ^5.4.10
   video_player: ^0.10.0+2
+  flutter_auth_buttons: ^0.8.0
 
 dev_dependencies:
   flutter_test:

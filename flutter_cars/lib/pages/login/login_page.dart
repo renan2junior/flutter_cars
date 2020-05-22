@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/carro/home_page.dart';
 import 'package:flutter_cars/pages/login/login_bloc.dart';
@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
     _loadUsuario();
   }
 
-   _loadUsuario() async {
+  _loadUsuario() async {
     Usuario user = await Usuario.get();
     if (user != null) {
       push(context, HomePage());
@@ -78,6 +78,13 @@ class _LoginPageState extends State<LoginPage> {
                 builder: (context, snapshot) {
                   return Button("Login", _onClickLogin, snapshot.data);
                 }),
+            Container(
+              height: 46,
+              margin: EdgeInsets.only(top:20),
+              child: GoogleSignInButton(
+                onPressed: _onClickGoogle,
+              ),
+            )
           ],
         ),
       ),
@@ -114,8 +121,11 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _bloc.dispose();
+  }
+
+  void _onClickGoogle() {
+    print("Google");
   }
 }
