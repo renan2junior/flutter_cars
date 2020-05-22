@@ -47,6 +47,33 @@ class FirebaseService {
     }
   }
 
+  Future<ApiResponse> login(String login, String senha) async {
+    try {
+      // Login no Firebase
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: login, password: senha);
+      final FirebaseUser fuser = result.user;
+      print("Firebase Nome: ${fuser.displayName}");
+      print("Firebase Email: ${fuser.email}");
+      print("Firebase Foto: ${fuser.photoUrl}");
+
+      // Cria um usuario do app
+      final user = Usuario(
+        nome: fuser.displayName,
+        login: fuser.email,
+        email: fuser.email,
+        urlFoto: fuser.photoUrl,
+      );
+      user.save();
+
+      // Resposta genérica
+      return ApiResponse.ok();
+    } catch (error) {
+      print("Firebase error $error");
+      return ApiResponse.error("Não foi possível fazer o login");
+    }
+  }
+
+
   Future<void> logout() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
