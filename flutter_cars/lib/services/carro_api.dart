@@ -15,10 +15,10 @@ class TipoCarro {
 class CarroApi {
 
   static Future<ApiResponse<bool>> delete(Carro carro) async {
-    var url = "http://carros-springboot.herokuapp.com/api/v2/carros/${carro.id}";
+    var url = "http://carros-springboot.herokuapp.com/api/v1/carros/${carro.id}";
     var response = await http.delete(url);
     if(response.statusCode == 200 ){
-      return ApiResponse.ok(true);
+      return ApiResponse.ok();
     }
     Map mapResponse  = json.decode(response.body);
     return ApiResponse.error(mapResponse["error"]);
@@ -34,7 +34,7 @@ class CarroApi {
     }
 
     String stringJson = carro.toJson();
-    var url = "http://carros-springboot.herokuapp.com/api/v2/carros";
+    var url = "http://carros-springboot.herokuapp.com/api/v1/carros";
     if (carro.id != null) {
       url = url + "/${carro.id}";
     }
@@ -45,7 +45,7 @@ class CarroApi {
       Map mapResponse = json.decode(response.body);
       Carro carro = Carro.fromMap(mapResponse);
       // print("Carro ===> ${carro.id}");
-      return ApiResponse.ok(true);
+      return ApiResponse.ok();
     }
     Map mapResponse = json.decode(response.body);
     return ApiResponse.error(mapResponse["error"]);
@@ -53,7 +53,7 @@ class CarroApi {
 
   static Future<List<Carro>> getCarros(String tipo) async {
     String url =
-        "http://carros-springboot.herokuapp.com/api/v2/carros/tipo/$tipo";
+        "http://carros-springboot.herokuapp.com/api/v1/carros/tipo/$tipo";
     // print(url);
     var response = await http.get(url);
     String _json = response.body;

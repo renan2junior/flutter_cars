@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
+import 'package:flutter_cars/firebase/firebase_service.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/carro/home_page.dart';
 import 'package:flutter_cars/pages/login/login_bloc.dart';
@@ -105,6 +106,16 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
+  void _onClickGoogle() async  {
+    final service = FirebaseService();
+    ApiResponse response = await service.loginGoogle();
+    if(response.ok){
+      push(context, HomePage(), replace: true);
+    }else{
+      alert(context, "Erro", response.msg);
+    }
+  }
+  
   _onClickLogin() async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -125,7 +136,4 @@ class _LoginPageState extends State<LoginPage> {
     _bloc.dispose();
   }
 
-  void _onClickGoogle() {
-    print("Google");
-  }
 }

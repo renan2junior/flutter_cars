@@ -20,18 +20,19 @@ class Usuario {
     this.roles,
   });
 
-  
-  
   // Criado para savar o usuário nas preferencias
   // Criado por mim.
   void save() {
-      Prefs.setString("USER", this.toJson());
+    Prefs.setString("USER", this.toJson());
   }
+
   // Criado para recuperar o usuario.
   static Future<Usuario> get() async {
     String userString = await Prefs.getString("USER");
-    return userString.isEmpty ? null : fromJson(userString);
+    Usuario user = userString.isEmpty ? null : fromJson(userString);
+    return user;
   }
+
   // Limpar os dados do usuario nas prefs
   static void clear() {
     Prefs.setString("USER", "");
@@ -67,15 +68,18 @@ class Usuario {
   }
 
   static Usuario fromMap(Map<String, dynamic> map) {
-    if (map == null) return null;
-  
+    if (map == null) {
+      return null;
+    }
+
     return Usuario(
       login: map['login'],
       nome: map['nome'],
       email: map['email'],
       urlFoto: map['urlFoto'],
       token: map['token'],
-      roles: List<String>.from(map['roles']),
+      // roles: List<String>.from(map['roles']),
+      roles: map['roles'] != null ? map['roles'].cast<String>() : null,
     );
   }
 
@@ -91,25 +95,23 @@ class Usuario {
   @override
   bool operator ==(Object o) {
     if (identical(this, o)) return true;
-  
+
     return o is Usuario &&
-      o.login == login &&
-      o.nome == nome &&
-      o.email == email &&
-      o.urlFoto == urlFoto &&
-      o.token == token &&
-      listEquals(o.roles, roles);
+        o.login == login &&
+        o.nome == nome &&
+        o.email == email &&
+        o.urlFoto == urlFoto &&
+        o.token == token &&
+        listEquals(o.roles, roles);
   }
 
   @override
   int get hashCode {
     return login.hashCode ^
-      nome.hashCode ^
-      email.hashCode ^
-      urlFoto.hashCode ^
-      token.hashCode ^
-      roles.hashCode;
+        nome.hashCode ^
+        email.hashCode ^
+        urlFoto.hashCode ^
+        token.hashCode ^
+        roles.hashCode;
   }
-
-  
 }

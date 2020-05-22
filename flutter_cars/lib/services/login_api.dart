@@ -8,7 +8,7 @@ class LoginApi {
   static Future<ApiResponse<Usuario>> login(String login, String senha) async {
     // var url = 'http://livrowebservices.com.br/rest/login';
     try {
-      var url = 'https://carros-springboot.herokuapp.com/api/v2/login';
+      var url = 'https://carros-springboot.herokuapp.com/api/v1/login';
       Map params = {'username': login, 'password': senha};
       String _body = json.encode(params);
       Map<String, String> _headers = {"Content-Type": "application/json"};
@@ -23,7 +23,7 @@ class LoginApi {
         Usuario user2 = await Usuario.get();
         // print("USUARIO OBJETO ==> $user2");
 
-        return ApiResponse.ok(user);
+        return ApiResponse.ok(result: user);
       }
       // print("ERROR ===> $_response");
       return ApiResponse.error(_response["error"]);
