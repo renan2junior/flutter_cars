@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
 import 'package:flutter_cars/pages/carro/carros_listview.dart';
-import 'package:flutter_cars/pages/favoritos/favoritos_bloc.dart';
+import 'package:flutter_cars/pages/favoritos/favoritos_service.dart';
 import 'package:flutter_cars/widgets/test_error.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -28,7 +28,7 @@ class _FavoritosPageState extends State<FavoritosPage>
   Widget build(BuildContext context) {
     super.build(context);
     return StreamBuilder<QuerySnapshot>(
-      stream: Firestore.instance.collection('carros').snapshots(),
+      stream: FavoritosService().stream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return TestError("Ocorreu um erro na conexão.");
@@ -48,11 +48,6 @@ class _FavoritosPageState extends State<FavoritosPage>
         }
       },
     );
-  }
-
-  Future<void> _onRefresh() {
-    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context);
-    return _bloc.fetch();
   }
 
   @override

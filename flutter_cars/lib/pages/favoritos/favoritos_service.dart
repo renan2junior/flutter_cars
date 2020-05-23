@@ -1,38 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/models/carro.dart';
-import 'package:flutter_cars/models/favorito.dart';
-import 'package:flutter_cars/pages/carro/carro_dao.dart';
-import 'package:flutter_cars/pages/favoritos/favoritos_bloc.dart';
-import 'package:flutter_cars/pages/favoritos/favoritos_dao.dart';
-import 'package:provider/provider.dart';
 
 class FavoritosService {
-  static Future<bool> Favoritar(BuildContext context,  Carro carro) async {
-    Favorito favorito = Favorito(id: carro.id, nome: carro.descricao);
-    final dao = FavoritosDao();
-    bool exist = await dao.exists(carro.id);
+
+  CollectionReference get _carros => Firestore.instance.collection("carros");
+
+  Stream<QuerySnapshot> get stream => _carros.snapshots();
+
+  Future<bool> Favoritar(Carro carro) async {
+    
+    DocumentReference docRef = _carros.document("${carro.id}");
+
+    DocumentSnapshot doc = await docRef.get();
+
+    bool exist = doc.exists;
     if (exist) {
-      dao.delete(carro.id);
-      // dao.findAll().then((list) => print(list));
-      Provider.of<FavoritosBloc>(context, listen: false).fetch();
+      docRef.delete();
       return false;
     } else {
-      dao.save(favorito);
-      // dao.findAll().then((list) => print(list));
-      Provider.of<FavoritosBloc>(context, listen: false).fetch();
+      docRef.setData(carro.toMap());
       return true;
     }
   }
 
-  static Future<List<Carro>> getCarros() async {
-    List<Carro> carros = await CarroDAO()
-        .query("select * from carro c, favorito f where c.id = f.id");
-    return carros;
-  }
-
-  static Future<bool> isFavorito(Carro carro) async {
-    final dao = FavoritosDao();
-    final exist = await dao.exists(carro.id);
+  Future<bool> isFavorito(Carro carro) async {
+    DocumentReference docRef = _carros.document("${carro.id}");
+    DocumentSnapshot doc = await docRef.get();
+    bool exist = doc.exists;
     return exist;
   }
 }

@@ -10,7 +10,6 @@ import 'package:flutter_cars/services/loripsum_api.dart';
 import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/event_bus.dart';
 import 'package:flutter_cars/utils/nav.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CarroPage extends StatefulWidget {
 
@@ -32,7 +31,7 @@ class _CarroPageState extends State<CarroPage> {
   void initState() {
     super.initState();
     _bloc.fetch();
-    FavoritosService.isFavorito(carro).then((isFavorito) {
+    FavoritosService().isFavorito(carro).then((isFavorito) {
       setState(() {
         color = isFavorito ? Colors.red : Colors.grey;
       });
@@ -212,7 +211,7 @@ class _CarroPageState extends State<CarroPage> {
   }
 
   void _onClickFavotite() async {
-    bool favorito = await FavoritosService.Favoritar(context, carro);
+    bool favorito = await FavoritosService().Favoritar(carro);
     setState(() {
       color = favorito ? Colors.red : Colors.grey;
     });

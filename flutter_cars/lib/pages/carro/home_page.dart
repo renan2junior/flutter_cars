@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cars/pages/carro/carro_form_page.dart';
 import 'package:flutter_cars/pages/carro/carros_page.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_page.dart';
 import 'package:flutter_cars/services/carro_api.dart';
-import 'package:flutter_cars/utils/alert.dart';
 import 'package:flutter_cars/utils/nav.dart';
 import 'package:flutter_cars/widgets/drawer_list.dart';
 import 'package:flutter_cars/utils/prefs.dart';
@@ -84,5 +84,10 @@ class _HomePageState extends State<HomePage>
 
   void _onClickAddCarros() {
     push(context, CarroFormPage());
+    // Firestore.instance.collection('carros').document("1").setData({
+    //   'nome': 'Chevrolet Corvette',
+    //   'urlFoto':
+    //       'http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Corvette.png'
+    // });
   }
 }
