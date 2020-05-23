@@ -3,6 +3,7 @@ import 'package:flutter_auth_buttons/flutter_auth_buttons.dart';
 import 'package:flutter_cars/firebase/firebase_service.dart';
 import 'package:flutter_cars/models/usuario.dart';
 import 'package:flutter_cars/pages/carro/home_page.dart';
+import 'package:flutter_cars/pages/login/cadastro_page.dart';
 import 'package:flutter_cars/pages/login/login_bloc.dart';
 import 'package:flutter_cars/services/api_response.dart';
 import 'package:flutter_cars/utils/alert.dart';
@@ -81,10 +82,15 @@ class _LoginPageState extends State<LoginPage> {
                 }),
             Container(
               height: 46,
-              margin: EdgeInsets.only(top:20),
+              margin: EdgeInsets.only(top: 20),
               child: GoogleSignInButton(
                 onPressed: _onClickGoogle,
               ),
+            ),
+            Container(
+              height: 46,
+              margin: EdgeInsets.only(top: 20),
+              child: Button("Cadastro", _onClickCadastro, false),
             )
           ],
         ),
@@ -106,22 +112,21 @@ class _LoginPageState extends State<LoginPage> {
     return null;
   }
 
-  void _onClickGoogle() async  {
+  void _onClickGoogle() async {
     final service = FirebaseService();
     ApiResponse response = await service.loginGoogle();
-    if(response.ok){
+    if (response.ok) {
       push(context, HomePage(), replace: true);
-    }else{
+    } else {
       alert(context, "Erro", response.msg);
     }
   }
-  
+
   _onClickLogin() async {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    ApiResponse response =
-        await _bloc.login(_tLogin.text, _tSenha.text);
+    ApiResponse response = await _bloc.login(_tLogin.text, _tSenha.text);
     if (response.ok) {
       push(context, HomePage(), replace: true);
     } else {
@@ -136,4 +141,7 @@ class _LoginPageState extends State<LoginPage> {
     _bloc.dispose();
   }
 
+  _onClickCadastro() {
+    push(context, CadastroPage());
+  }
 }
