@@ -4,9 +4,9 @@ import 'package:flutter_cars/pages/carro/carros_listview.dart';
 import 'package:flutter_cars/pages/favoritos/favoritos_bloc.dart';
 import 'package:flutter_cars/widgets/test_error.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class FavoritosPage extends StatefulWidget {
-
   @override
   _FavoritosPageState createState() => _FavoritosPageState();
 }
@@ -20,17 +20,16 @@ class _FavoritosPageState extends State<FavoritosPage>
   @override
   void initState() {
     super.initState();
-    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context, listen: false);
-    _bloc.fetch();
+    // FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context, listen: false);
+    // _bloc.fetch();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    FavoritosBloc _bloc = Provider.of<FavoritosBloc>(context);
-    return StreamBuilder(
-      stream: _bloc.stream,
-      builder: (BuildContext context, snapshot) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: Firestore.instance.collection('carros').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return TestError("Ocorreu um erro na conexão.");
         }
@@ -40,12 +39,12 @@ class _FavoritosPageState extends State<FavoritosPage>
           );
         } else {
           // print(snapshot.data);
-          List<Carro> carros = snapshot.data;
+          List<Carro> carros =
+              snapshot.data.documents.map((DocumentSnapshot document) {
+            return Carro.fromMap(document.data);
+          }).toList();
           // print(carros);
-          return RefreshIndicator(
-            child: CarrosListView(carros),
-            onRefresh: _onRefresh,
-          );
+          return CarrosListView(carros);
         }
       },
     );
@@ -58,5 +57,4 @@ class _FavoritosPageState extends State<FavoritosPage>
 
   @override
   bool get wantKeepAlive => true;
-
 }

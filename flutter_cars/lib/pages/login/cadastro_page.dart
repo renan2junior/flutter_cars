@@ -100,7 +100,7 @@ class _CadastroPageState extends State<CadastroPage> {
     }
 
     setState(() {
-      _progress = true;
+      _progress = false;
     });
   }
 

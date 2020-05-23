@@ -135,13 +135,13 @@ class _LoginPageState extends State<LoginPage> {
     return;
   }
 
+  _onClickCadastro() {
+    push(context, CadastroPage(), replace: true);
+  }
+
   @override
   void dispose() {
     super.dispose();
     _bloc.dispose();
-  }
-
-  _onClickCadastro() {
-    push(context, CadastroPage());
   }
 }
